@@ -18,6 +18,10 @@ jobs:
           curl -L "https://github.com/gradle/gradle/raw/v8.4.0/gradle/wrapper/gradle-wrapper.jar" -o gradle/wrapper/gradle-wrapper.jar
           printf 'distributionBase=GRADLE_USER_HOME\ndistributionPath=wrapper/dists\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-8.4-bin.zip\nzipStoreBase=GRADLE_USER_HOME\nzipStorePath=wrapper/dists\n' > gradle/wrapper/gradle-wrapper.properties
           chmod +x gradlew
+      - name: Inject API Key
+        run: |
+          sed -i "s/YOUR_API_KEY_HERE/${{ secrets.CLAUDE_API_KEY }}/g" app/src/main/java/com/babluu/zane/MainActivity.java
+          sed -i "s/YOUR_API_KEY_HERE/${{ secrets.CLAUDE_API_KEY }}/g" app/src/main/java/com/babluu/zane/WakeWordService.java
       - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4.6.2
